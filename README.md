@@ -49,9 +49,14 @@ flowchart LR
 
 ## In this repository
 
-The public regression suite and the GitHub Actions workflow that runs it are on
-their way. Each test states the verdict Tailoop should reach, including tests it
-should fail, and the workflow checks that it does.
+- `tests/` is a public regression suite for Tailoop itself. The folder a test
+  sits in is the verdict Tailoop must reach: `pass/` or `fail/`. Tests in
+  `fail/` ask for something the application does not do, and the suite only
+  passes if Tailoop notices.
+- `tailoop.yaml` is the configuration it runs with: headless Chrome, driven
+  through [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp).
+- `.github/workflows/regression.yml` runs the suite on every Tailoop release and
+  once a week. Each run's summary lists every verdict with its reasoning and cost.
 
 ## Getting access
 

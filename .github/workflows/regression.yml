@@ -1,0 +1,77 @@
+name: Regression
+
+on:
+  # Sent when a Tailoop release is promoted.
+  repository_dispatch:
+    types: [tailoop-released]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Tailoop build to test: latest, or a build id"
+        default: latest
+  # Weekly
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: regression
+  cancel-in-progress: false
+
+jobs:
+  regression:
+    runs-on: ubuntu-24.04
+    environment: public-regression
+    timeout-minutes: 30
+    env:
+      TAILOOP_VERSION: ${{ github.event.client_payload.tag || inputs.version || 'latest' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+
+      - name: Install ORAS
+        env:
+          ORAS_VERSION: "1.3.4"
+          ORAS_SHA256: "f27adb935022d94df8dc77719c322dda592c78a0d57a6f7dcdd8d900b248c454"
+        run: |
+          curl -fsSLo oras.tar.gz "https://github.com/oras-project/oras/releases/download/v${ORAS_VERSION}/oras_${ORAS_VERSION}_linux_amd64.tar.gz"
+          echo "${ORAS_SHA256}  oras.tar.gz" | sha256sum --check -
+          sudo tar -xzf oras.tar.gz -C /usr/local/bin oras
+
+      - name: Install Tailoop
+        env:
+          REGISTRY: ${{ secrets.TAILOOP_REGISTRY }}
+          REGISTRY_USER: ${{ vars.TAILOOP_REGISTRY_USER }}
+          REGISTRY_TOKEN: ${{ secrets.TAILOOP_REGISTRY_TOKEN }}
+        run: |
+          echo "$REGISTRY_TOKEN" | oras login "$REGISTRY" -u "$REGISTRY_USER" --password-stdin
+          oras pull "$REGISTRY/tailoop/wheel:$TAILOOP_VERSION" -o dist
+          pip install dist/*.whl
+          tailoop version
+
+      - name: Run the suite
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TEST_SECRET_PASSWORD: ${{ secrets.TEST_SECRET_PASSWORD }}
+        # A FAIL verdict exits 1 and is expected here; the next step judges it.
+        run: |
+          tailoop run --directory tests --config tailoop.yaml \
+            --report-format json --report-format junit --save-dir results \
+            || test $? -eq 1
+
+      - name: Check verdicts
+        run: python scripts/check_verdicts.py results
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: always()
+        with:
+          name: results
+          path: results/
+          retention-days: 14

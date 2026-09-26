@@ -1,0 +1,26 @@
+# The configuration the regression suite runs with.
+llm:
+  model: "gpt-5.6-luna"
+
+# Every tool Tailoop uses comes from an MCP server listed here.
+mcp_servers:
+  chromedevtools:
+    enabled: true
+    description: "Chrome browser control: navigate pages, click and fill elements, take page snapshots and screenshots."
+    executor_guidance: |
+      UIDs come from the latest snapshot and go stale after any navigation;
+      take a fresh snapshot rather than reusing one from before a page change.
+    command: "npx"
+    args:
+      - "-y"
+      - "chrome-devtools-mcp@~1.9.0"
+      - "--no-page-id-routing"
+      # A CI runner has no display.
+      - "--headless=true"
+      - "--isolated"
+      # Chrome's sandbox needs kernel features CI machines often lack.
+      - "--chrome-arg=--no-sandbox"
+      - "--chrome-arg=--disable-dev-shm-usage"
+      - "--no-usage-statistics"
+      - "--no-performance-crux"
+    transport: "stdio"
