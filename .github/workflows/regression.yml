@@ -51,8 +51,14 @@ jobs:
           REGISTRY_USER: ${{ vars.TAILOOP_REGISTRY_USER }}
           REGISTRY_TOKEN: ${{ secrets.TAILOOP_REGISTRY_TOKEN }}
         run: |
+          # Typed by hand, so forgive stray spaces but nothing else.
+          version="${TAILOOP_VERSION//[[:space:]]/}"
+          if [[ ! "$version" =~ ^[A-Za-z0-9._-]+$ ]]; then
+            echo "::error::The version must be latest or a build id, such as 118dd330."
+            exit 1
+          fi
           echo "$REGISTRY_TOKEN" | oras login "$REGISTRY" -u "$REGISTRY_USER" --password-stdin
-          oras pull "$REGISTRY/tailoop/wheel:$TAILOOP_VERSION" -o dist
+          oras pull "$REGISTRY/tailoop/wheel:$version" -o dist
           pip install dist/*.whl
           tailoop version
 

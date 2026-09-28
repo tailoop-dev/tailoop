@@ -66,7 +66,8 @@ def main() -> None:
     if not tests:
         sys.exit("The run finished without any tests.")
 
-    report, wrong = check(tests, os.environ.get("TAILOOP_VERSION", "latest"))
+    version = os.environ.get("TAILOOP_VERSION", "").strip() or "latest"
+    report, wrong = check(tests, version)
     print(report)
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary_path:
