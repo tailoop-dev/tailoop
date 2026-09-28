@@ -1,0 +1,5 @@
+Web app: https://www.saucedemo.com
+
+Test scenario: Log in with username "problem_user" and password {{PASSWORD}}. Take a screenshot of the product list.
+
+Acceptance criteria: Every product shows its own picture, matching its name, and no two products show the same picture.

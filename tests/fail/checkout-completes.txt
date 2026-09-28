@@ -1,0 +1,5 @@
+Web app: https://www.saucedemo.com
+
+Test scenario: Log in with username "error_user" and password {{PASSWORD}}. Add "Sauce Labs Backpack" to the cart, open the cart and check out with first name "Test", last name "User" and postal code "00100". Continue to the overview and click Finish.
+
+Acceptance criteria: The order completes and the page says "Thank you for your order!".

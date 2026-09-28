@@ -1,0 +1,5 @@
+Web app: https://www.saucedemo.com
+
+Test scenario: Read the expected prices from the file fixtures/prices.json. Log in with username "standard_user" and password {{PASSWORD}}, then read the price shown in the product list for each product named in the file.
+
+Acceptance criteria: Every product named in the file is shown with exactly the price the file gives for it.

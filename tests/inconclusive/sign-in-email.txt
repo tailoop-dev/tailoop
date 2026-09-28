@@ -1,0 +1,5 @@
+Web app: https://www.saucedemo.com
+
+Test scenario: Log in with username "standard_user" and password {{PASSWORD}}.
+
+Acceptance criteria: A sign-in notification email reaches the account owner's inbox.

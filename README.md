@@ -1,5 +1,7 @@
 # Tailoop
 
+[![Regression](https://github.com/tailoop-dev/tailoop/actions/workflows/regression.yml/badge.svg)](https://github.com/tailoop-dev/tailoop/actions/workflows/regression.yml)
+
 Describe a test in plain English. Tailoop's agent carries it out against your
 application and returns a verdict, with the evidence behind it.
 
@@ -50,13 +52,19 @@ flowchart LR
 ## In this repository
 
 - `tests/` is a public regression suite for Tailoop itself. The folder a test
-  sits in is the verdict Tailoop must reach: `pass/` or `fail/`. Tests in
-  `fail/` ask for something the application does not do, and the suite only
-  passes if Tailoop notices.
-- `tailoop.yaml` is the configuration it runs with: headless Chrome, driven
-  through [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp).
+  sits in is the verdict Tailoop must reach: `pass/`, `fail/` or
+  `inconclusive/`. Tests in `fail/` ask for something the application does not
+  do, and tests in `inconclusive/` ask for something no configured tool can
+  check. The suite only passes if Tailoop tells each case apart.
+- `tailoop.yaml` gives it two MCP servers: headless Chrome through
+  [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp),
+  and a filesystem server reading `fixtures/`. `tests/pass/prices-match-fixture.txt`
+  uses both in one test.
 - `.github/workflows/regression.yml` runs the suite on every Tailoop release and
   once a week. Each run's summary lists every verdict with its reasoning and cost.
+
+**Latest results:** [every run of the suite](https://github.com/tailoop-dev/tailoop/actions/workflows/regression.yml),
+newest first. Open one to see its verdicts.
 
 ## Getting access
 

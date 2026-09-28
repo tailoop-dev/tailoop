@@ -1,6 +1,6 @@
 # The configuration the regression suite runs with.
 llm:
-  model: "gpt-5.6-luna"
+  model: "gpt-5.6-terra"
 
 # Every tool Tailoop uses comes from an MCP server listed here.
 mcp_servers:
@@ -23,4 +23,14 @@ mcp_servers:
       - "--chrome-arg=--disable-dev-shm-usage"
       - "--no-usage-statistics"
       - "--no-performance-crux"
+    transport: "stdio"
+
+  filesystem:
+    enabled: true
+    description: "Files in the fixtures folder: expected values that tests compare the application against."
+    command: "npx"
+    args:
+      - "-y"
+      - "@modelcontextprotocol/server-filesystem@2026.8.31"
+      - "./fixtures"
     transport: "stdio"
