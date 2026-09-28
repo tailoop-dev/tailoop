@@ -1,5 +1,5 @@
 Web app: https://www.saucedemo.com
 
-Test scenario: Log in with username "standard_user" and password {{PASSWORD}}. Add "Sauce Labs Backpack" to the cart, then open the cart.
+Test scenario: Log in with username "standard_user" and password {{PASSWORD}}. Start from an empty cart: open the menu, click "Reset App State", then reload the page. Add "Sauce Labs Backpack" to the cart, then open the cart.
 
 Acceptance criteria: The cart holds exactly one item, and it is the Sauce Labs Backpack.

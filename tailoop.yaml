@@ -1,6 +1,6 @@
 # The configuration the regression suite runs with.
 llm:
-  model: "gpt-5.6-terra"
+  model: "gpt-5.6-luna"
 
 # Every tool Tailoop uses comes from an MCP server listed here.
 mcp_servers:
@@ -10,6 +10,8 @@ mcp_servers:
     executor_guidance: |
       UIDs come from the latest snapshot and go stale after any navigation;
       take a fresh snapshot rather than reusing one from before a page change.
+      A click can report success without the page reacting. If the page has not
+      changed, click the element with evaluate_script instead of clicking again.
     command: "npx"
     args:
       - "-y"
