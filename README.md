@@ -1,9 +1,10 @@
 # Tailoop
 
 [![Regression](https://github.com/tailoop-dev/tailoop/actions/workflows/regression.yml/badge.svg)](https://github.com/tailoop-dev/tailoop/actions/workflows/regression.yml)
+[![Release](https://img.shields.io/github/v/release/tailoop-dev/tailoop)](https://github.com/tailoop-dev/tailoop/releases)
 
-Describe a test in plain English. Tailoop's agent carries it out against your
-application and returns a verdict, with the evidence behind it.
+Describe a test in your own words, in any language. Tailoop's agent carries it
+out against your application and returns a verdict, with the evidence behind it.
 
 > Tailoop itself is not open source. This repository holds examples and a
 > public regression suite that runs the released tool.
@@ -30,7 +31,7 @@ drops into any CI pipeline. Results are written as JSON and JUnit XML.
 
 ```mermaid
 flowchart LR
-    test[Test in plain English] --> planner[Planner]
+    test[Test in any language] --> planner[Planner]
     planner --> executor[Executor]
     executor -- tool calls --> servers[(MCP servers)]
     servers -- results --> executor
@@ -39,15 +40,16 @@ flowchart LR
     observer --> verdict[Verdict and evidence]
 ```
 
-- **Every backend is an MCP server.** A browser, a Windows desktop, a database,
-  an API or your own server, each a few lines of YAML. Several can take part in
-  one test.
-- **The verdict comes from evidence.** A separate observer judges what the
-  tools actually returned, asks for earlier screenshots when it needs them, and
-  answers INCONCLUSIVE rather than guess.
-- **Credentials never reach the model.** Tests use placeholders such as
-  `{{PASSWORD}}`; the real value is filled in at the tool call and masked in
-  everything the model sees.
+- **Every backend is an MCP server.** Browsers, desktop UIs, databases, external
+  APIs, and your own applications become available through a few lines of
+  configuration. Tailoop picks the right tools from the available servers for
+  the test at hand.
+- **The verdict comes from evidence.** An independent observer agent evaluates
+  how the test execution progressed, uses gathered evidence to draw conclusions,
+  and returns INCONCLUSIVE if the provided data is insufficient.
+- **Secrets never reach the model.** Tests use placeholders such as
+  `{{PASSWORD}}` for sensitive data; the real value is injected into the tool
+  calls and removed from everything the model sees.
 
 ## In this repository
 
@@ -55,7 +57,8 @@ flowchart LR
   sits in is the verdict Tailoop must reach: `pass/`, `fail/` or
   `inconclusive/`. Tests in `fail/` ask for something the application does not
   do, and tests in `inconclusive/` ask for something no configured tool can
-  check. The suite only passes if Tailoop tells each case apart.
+  check. The suite only passes if Tailoop tells each case apart. One test,
+  `tests/fail/locked-out-login.txt`, is written in Finnish.
 - `tailoop.yaml` gives it two MCP servers: headless Chrome through
   [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp),
   and a filesystem server reading `fixtures/`. `tests/pass/prices-match-fixture.txt`
@@ -64,9 +67,9 @@ flowchart LR
   once a week. Each run's summary lists every verdict with its reasoning and cost.
 
 **Latest results:** [every run of the suite](https://github.com/tailoop-dev/tailoop/actions/workflows/regression.yml),
-newest first. Open one to see its verdicts.
+newest first. Open one to see the test results.
 
 ## Getting access
 
 Tailoop is built by [Wapice](https://www.wapice.com) and is currently available
-to selected teams. Open an issue in this repository to ask about access.
+to selected teams.

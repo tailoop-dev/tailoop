@@ -1,5 +1,5 @@
-Web app: https://www.saucedemo.com
+Verkkosovellus: https://www.saucedemo.com
 
-Test scenario: Log in with username "locked_out_user" and password {{PASSWORD}}.
+Testiskenaario: Kirjaudu sisään käyttäjätunnuksella "locked_out_user" ja salasanalla {{PASSWORD}}.
 
-Acceptance criteria: The login succeeds and the product list is shown.
+Hyväksymiskriteerit: Kirjautuminen onnistuu ja tuotelista näkyy.

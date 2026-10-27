@@ -19,7 +19,7 @@ def check(tests: list[dict], version: str) -> tuple[str, int]:
 
     Args:
         tests: The ``tests`` list from Tailoop's ``suite_summary.json``.
-        version: The Tailoop build that ran, for the report's heading.
+        version: The Tailoop version that ran, for the report's heading.
 
     Returns:
         A Markdown report, and how many verdicts were not the expected one.

@@ -1,17 +1,16 @@
 name: Regression
+# Request id
+run-name: Regression ${{ github.event.client_payload.version || inputs.version || 'latest' }} ${{ github.event.client_payload.request }}
 
 on:
-  # Sent when a Tailoop release is promoted.
+  # Sent for every Tailoop release, and every Monday for the newest one.
   repository_dispatch:
     types: [tailoop-released]
   workflow_dispatch:
     inputs:
       version:
-        description: "Tailoop build to test: latest, or a build id"
+        description: "Tailoop version to test: latest, or a release such as 1.0.0"
         default: latest
-  # Weekly
-  schedule:
-    - cron: "17 6 * * 1"
 
 permissions:
   contents: read
@@ -26,7 +25,7 @@ jobs:
     environment: public-regression
     timeout-minutes: 30
     env:
-      TAILOOP_VERSION: ${{ github.event.client_payload.tag || inputs.version || 'latest' }}
+      TAILOOP_VERSION: ${{ github.event.client_payload.version || inputs.version || 'latest' }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -36,35 +35,15 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Install ORAS
-        env:
-          ORAS_VERSION: "1.3.4"
-          ORAS_SHA256: "f27adb935022d94df8dc77719c322dda592c78a0d57a6f7dcdd8d900b248c454"
-        run: |
-          curl -fsSLo oras.tar.gz "https://github.com/oras-project/oras/releases/download/v${ORAS_VERSION}/oras_${ORAS_VERSION}_linux_amd64.tar.gz"
-          echo "${ORAS_SHA256}  oras.tar.gz" | sha256sum --check -
-          sudo tar -xzf oras.tar.gz -C /usr/local/bin oras
-
       - name: Install Tailoop
         env:
-          REGISTRY: ${{ secrets.TAILOOP_REGISTRY }}
-          REGISTRY_USER: ${{ vars.TAILOOP_REGISTRY_USER }}
-          REGISTRY_TOKEN: ${{ secrets.TAILOOP_REGISTRY_TOKEN }}
-        run: |
-          # Typed by hand, so forgive stray spaces but nothing else.
-          version="${TAILOOP_VERSION//[[:space:]]/}"
-          if [[ ! "$version" =~ ^[A-Za-z0-9._-]+$ ]]; then
-            echo "::error::The version must be latest or a build id, such as 118dd330."
-            exit 1
-          fi
-          echo "$REGISTRY_TOKEN" | oras login "$REGISTRY" -u "$REGISTRY_USER" --password-stdin
-          oras pull "$REGISTRY/tailoop/wheel:$version" -o dist
-          pip install dist/*.whl
-          tailoop version
+          TAILOOP_INDEX_URL: ${{ secrets.TAILOOP_INDEX_URL }}
+        run: bash scripts/install-tailoop.sh
 
       - name: Run the suite
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.LLM_API_KEY }}
+          OPENAI_API_BASE: ${{ secrets.LLM_API_BASE }}
           TEST_SECRET_PASSWORD: ${{ secrets.TEST_SECRET_PASSWORD }}
         # A FAIL verdict exits 1 and is expected here; the next step judges it.
         run: |
