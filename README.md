@@ -3,8 +3,8 @@
 [![Regression](https://github.com/tailoop-dev/tailoop/actions/workflows/regression.yml/badge.svg)](https://github.com/tailoop-dev/tailoop/actions/workflows/regression.yml)
 [![Release](https://img.shields.io/github/v/release/tailoop-dev/tailoop)](https://github.com/tailoop-dev/tailoop/releases)
 
-Describe a test in your own words, in any language. Tailoop's agent carries it
-out against your application and returns a verdict, with the evidence behind it.
+Describe a test in your own words, in any language. Tailoop executes
+it against your application and returns a verdict, with the evidence behind it.
 
 > Tailoop itself is not open source. This repository holds examples and a
 > public regression suite that runs the released tool.
