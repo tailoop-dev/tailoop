@@ -72,4 +72,5 @@ newest first. Open one to see the test results.
 ## Getting access
 
 Tailoop is built by [Wapice](https://www.wapice.com) and is currently available
-to selected teams.
+to selected teams. For access or questions, write to
+[tailoop@wapice.com](mailto:tailoop@wapice.com).
