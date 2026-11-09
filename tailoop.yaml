@@ -15,7 +15,7 @@ mcp_servers:
     command: "npx"
     args:
       - "-y"
-      - "chrome-devtools-mcp@~1.9.0"
+      - "chrome-devtools-mcp@~1.12.0"
       - "--no-page-id-routing"
       # A CI runner has no display.
       - "--headless=true"
@@ -23,6 +23,9 @@ mcp_servers:
       # Chrome's sandbox needs kernel features CI machines often lack.
       - "--chrome-arg=--no-sandbox"
       - "--chrome-arg=--disable-dev-shm-usage"
+      # Chrome's leaked-password warning takes all clicks and typing after a login
+      # while the tools still report success; this blocks only that check.
+      - "--chrome-arg=--host-resolver-rules=MAP passwordsleakcheck-pa.googleapis.com ~NOTFOUND"
       - "--no-usage-statistics"
       - "--no-performance-crux"
     transport: "stdio"
@@ -33,6 +36,6 @@ mcp_servers:
     command: "npx"
     args:
       - "-y"
-      - "@modelcontextprotocol/server-filesystem@2026.8.31"
+      - "@modelcontextprotocol/server-filesystem@2.1.0"
       - "./fixtures"
     transport: "stdio"
