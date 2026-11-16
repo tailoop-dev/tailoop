@@ -2,9 +2,14 @@
 
 [![Regression](https://github.com/tailoop-dev/tailoop/actions/workflows/regression.yml/badge.svg)](https://github.com/tailoop-dev/tailoop/actions/workflows/regression.yml)
 [![Release](https://img.shields.io/github/v/release/tailoop-dev/tailoop)](https://github.com/tailoop-dev/tailoop/releases)
+[![Private Repository](https://badge.fury.io/fp/gemfury.svg)](https://fury.co/f/partner)
 
 Describe a test in your own words, in any language. Tailoop executes
 it against your application and returns a verdict, with the evidence behind it.
+
+[![The Tailoop demo video](https://img.youtube.com/vi/kotjLop53bo/maxres1.jpg)](https://www.youtube.com/watch?v=kotjLop53bo)
+
+[Watch the demo on YouTube](https://www.youtube.com/watch?v=kotjLop53bo)
 
 > Tailoop itself is not open source. This repository holds examples and a
 > public regression suite that runs the released tool.
@@ -72,5 +77,5 @@ newest first. Open one to see the test results.
 ## Getting access
 
 Tailoop is built by [Wapice](https://www.wapice.com) and is currently available
-to selected teams. For access or questions, write to
-[tailoop@wapice.com](mailto:tailoop@wapice.com).
+to selected teams. Read more on [Tailoop's page](https://wapice.com/services/tailoop-ai-testing-tool/),
+or write to [tailoop@wapice.com](mailto:tailoop@wapice.com) for access or questions.
